@@ -1,0 +1,20 @@
+<positions>
+    <element name="DIST">
+        <x>4.000000000</x>
+        <y>846.000000000</y>
+        <width>1672.000000000</width>
+        <height>45.000000000</height>
+    </element>
+    <element name="ROT-X">
+        <x>4.000000000</x>
+        <y>897.000000000</y>
+        <width>1672.000000000</width>
+        <height>58.000000000</height>
+    </element>
+    <element name="ROT-Z">
+        <x>4.000000000</x>
+        <y>961.000000000</y>
+        <width>1672.000000000</width>
+        <height>65.000000000</height>
+    </element>
+</positions>
