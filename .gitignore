@@ -62,3 +62,7 @@ Desktop.ini
 
 # Miscellaneous
 .mailmap
+/bin/data/timeline*.xml
+/bin/data/_Page*.xml
+/bin/data/snapshots/
+/bin/data/Presets/Working/
