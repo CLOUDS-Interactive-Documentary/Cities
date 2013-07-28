@@ -23,6 +23,7 @@ public:
     void selfDrawDebug();
     void selfSceneTransformation();
     void selfDraw();
+    void selfPostDraw();
     void selfExit();
     void selfBegin();
 	void selfEnd();
@@ -79,4 +80,11 @@ protected:
     float   blocksMinSize,blocksMinDist,blocksAlpha;
     float   blockSize;
     GLuint  cube;
+    
+    //  Post
+    //
+    ofShader    postShader;
+    ofTexture   postTexture;
+    float       postChromaDist;
+    float       postGrainDist;
 };
