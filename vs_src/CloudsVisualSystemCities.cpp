@@ -136,6 +136,11 @@ void CloudsVisualSystemCities::selfSetup()
     //  Points
     //
     makeGrid(100, 10);
+    
+    //  Post
+    //
+    postShader.load("",getVisualSystemDataPath()+"shaders/postprocess.fs");
+    ofLoadImage(postTexture, getVisualSystemDataPath()+"images/6.jpg");
 }
 
 void CloudsVisualSystemCities::selfBegin()
@@ -199,6 +204,10 @@ void CloudsVisualSystemCities::selfSetupRenderGui()
     rdrGui->addSlider("Min_Dist", 0.0, 0.5, &blocksMinDist);
     rdrGui->addSlider("Min_Size", 0.0, 1.0, &blocksMinSize);
     rdrGui->addSlider("Blocks_Alpha", 0.0, 1.0, &blocksAlpha);
+    
+    rdrGui->addLabel("Post-Process");
+    rdrGui->addSlider("Chroma_Distortion", -1.0, 1.0, &postChromaDist);
+    rdrGui->addSlider("Grain_Distortion", 0.0, 1.0, &postGrainDist);
 }
 
 void CloudsVisualSystemCities::makeGrid(float _size, int _resolution)
@@ -354,7 +363,17 @@ void CloudsVisualSystemCities::selfDraw()
 
     glDisable(GL_DEPTH_TEST);
     mat->end();
+}
 
+void CloudsVisualSystemCities::selfPostDraw(){
+    postShader.begin();
+    postShader.setUniformTexture("tex1", postTexture, 1);
+    postShader.setUniform2f("resolution", ofGetWidth(), ofGetHeight());
+    postShader.setUniform2f("textureResolution", postTexture.getWidth(), postTexture.getHeight());
+    postShader.setUniform1f("chromaDist", postChromaDist);
+    postShader.setUniform1f("grainDist", postGrainDist);
+    CloudsVisualSystem::selfPostDraw();
+    postShader.end();
 }
 
 void CloudsVisualSystemCities::billBoard()
