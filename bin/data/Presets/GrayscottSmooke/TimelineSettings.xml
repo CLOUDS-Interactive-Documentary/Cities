@@ -1,9 +1,9 @@
 <Canvas>
     <Kind>42</Kind>
     <Name>TimelineSettings</Name>
-    <IsMinified>1</IsMinified>
-    <XPosition>644.000000000</XPosition>
-    <YPosition>-3.000000000</YPosition>
+    <IsMinified>0</IsMinified>
+    <XPosition>1485.000000000</XPosition>
+    <YPosition>187.000000000</YPosition>
 </Canvas>
 <Widget>
     <Kind>2</Kind>
@@ -13,10 +13,20 @@
 <Widget>
     <Kind>8</Kind>
     <Name>DURATION</Name>
-    <Value>0.000000000</Value>
+    <Value>60.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>MAP</Name>
+    <Name>INDEFINITE</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>ANIMATE</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>DELETE</Name>
     <Value>0</Value>
 </Widget>
