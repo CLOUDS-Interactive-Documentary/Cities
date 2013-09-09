@@ -4,6 +4,14 @@
     <SliderCurves>
         <Mapping>
             <Widget>
+                <WidgetName>maskSize</WidgetName>
+                <WidgetID>20</WidgetID>
+                <WidgetCanvasParent>SystemSettings</WidgetCanvasParent>
+            </Widget>
+            <Track></Track>
+        </Mapping>
+        <Mapping>
+            <Widget>
                 <WidgetName>ROT-Y</WidgetName>
                 <WidgetID>11</WidgetID>
                 <WidgetCanvasParent>CamSettings</WidgetCanvasParent>
