@@ -326,7 +326,7 @@ void CloudsVisualSystemCities::selfUpdate()
 
 void CloudsVisualSystemCities::selfDraw()
 {
-    mat->begin();
+//    mat->begin();
     ofPushMatrix();
     
     glEnable(GL_DEPTH_TEST);
@@ -362,7 +362,7 @@ void CloudsVisualSystemCities::selfDraw()
     ofPopMatrix();
 
     glDisable(GL_DEPTH_TEST);
-    mat->end();
+//    mat->end();
 }
 
 void CloudsVisualSystemCities::selfPostDraw(){
