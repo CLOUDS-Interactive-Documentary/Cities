@@ -19,6 +19,7 @@ Release*/
 #XCode 4
 xcuserdata
 *.xcworkspace
+build/
 
 #Code::Blocks
 *.depend
@@ -29,6 +30,7 @@ xcuserdata
 *.opensdf
 *.suo
 ipch/
+
 
 #Eclipse
 .metadata
