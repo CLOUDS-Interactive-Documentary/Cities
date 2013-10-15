@@ -12,6 +12,53 @@ string CloudsVisualSystemCities::getSystemName()
 	return "Cities";
 }
 
+void CloudsVisualSystemCities::makeBigCubesVbo( int resX, int resY )
+{
+	//create a huge vbo filled with cubes
+	//
+	
+	//make our base cube to use it's vertices and indices
+	ofVboMesh m;
+	makeCubeMesh( m, .5,2,.5 );
+	vector<ofVec3f>& cubeVertices = m.getVertices();
+	vector<ofVec3f>& cubeNormals = m.getNormals();
+	vector<ofIndexType>& cubeIndices = m.getIndices();
+
+	//create or faces( triangles with normals )
+	vector<ofVec3f>& vertices = cubeMesh.getVertices();
+	
+	cubeMesh.clear();
+	ofIndexType firstIndex;
+	ofVec3f offset( -resX/2, 0, -resY/2 );
+	ofVec2f tc( 1./float(resX-1), 1./float(resY-1));
+	for (int i=0; i<resX; i++)
+	{
+		for (int j=0; j<resY; j++)
+		{
+			//store our first cube index
+			firstIndex = vertices.size();
+			
+			//add our vertices
+			for (int k=0; k<cubeVertices.size(); k++)
+			{
+				//add our vertex and normal
+				cubeMesh.addVertex( cubeVertices[k] + offset + ofVec3f(i, 0, j));
+				cubeMesh.addNormal( cubeNormals[k] );
+				
+				//our texCoords are the same for each vertex in the cube
+				cubeMesh.addTexCoord( ofVec2f(i, j) * tc );
+			}
+			
+			//add our indices
+			for (int k=0; k<cubeIndices.size(); k++) {
+				cubeMesh.addIndex( cubeIndices[k] + firstIndex );
+			}
+		}
+	}
+	
+	m.clear();
+}
+
 void CloudsVisualSystemCities::generateCube(float sizeX, float sizeY, float sizeZ)
 {
     ofPushMatrix();
@@ -136,6 +183,12 @@ void CloudsVisualSystemCities::selfSetup()
     //  Points
     //
     makeGrid(100, 10);
+	
+	//cubes vbo
+	makeBigCubesVbo( 100, 100 );
+	
+	//cubes shader
+	cubesShader.load(getVisualSystemDataPath()+"shaders/city");
     
     //  Post
     //
@@ -326,43 +379,62 @@ void CloudsVisualSystemCities::selfUpdate()
 
 void CloudsVisualSystemCities::selfDraw()
 {
-//    mat->begin();
-    ofPushMatrix();
-    
-    glEnable(GL_DEPTH_TEST);
-    ofTranslate(-size*0.5,-size*0.5);
-    ofFill();
-    
-    ofSetColor(255);
-    ofFloatPixels heightPixels;
-    maskFbo.getTextureReference().readToPixels(heightPixels);
-    
-    int jump = heightPixels.getWidth()/resolution;
-    for(int x = 0; x < resolution; x++){
-        for(int y = 0; y < resolution; y++){
-            
-            float value = heightPixels.getColor(x*jump,y*jump).b;
-            
-            ofPushMatrix();
-            ofTranslate(x*blockSize,y*blockSize, height*value*0.5*blockSize );
-            
-            if ( value > 0.0){
-                ofSetColor(255, MAX(blocksAlpha*255,55+value*200.0) );
-                ofScale((1.0*(1.0-blocksMinDist))-(value*blocksMinSize),
-                        (1.0*(1.0-blocksMinDist))-(value*blocksMinSize),
-                        height*value);
-                
-                //PATRICIO: seeing crashing here when called from CLOUDS thread
-                glCallList(cube);
-                
-            }
-            ofPopMatrix();
-        }
-    }
-    ofPopMatrix();
+	
+	//TODO: cull face
+	
+	glEnable(GL_DEPTH_TEST);
+	ofPushMatrix();
+	ofRotate(90, 1, 0, 0);
+	ofScale(2,2,-2);
+	
+	cubesShader.begin();
+	cubesShader.setUniform2f( "displacmentDim", maskFbo.getWidth(), maskFbo.getHeight());
+	cubesShader.setUniformTexture("displacment", maskFbo.getTextureReference(), 0);
+	
+	cubeMesh.draw();
+	
+	cubesShader.end();
+	
+	ofPopMatrix();
+	glDisable(GL_DEPTH_TEST);
 
-    glDisable(GL_DEPTH_TEST);
-//    mat->end();
+
+//    ofPushMatrix();
+//    
+//    glEnable(GL_DEPTH_TEST);
+//    ofTranslate(-size*0.5,-size*0.5);
+//    ofFill();
+//    
+//    ofSetColor(255);
+//    ofFloatPixels heightPixels;
+//    maskFbo.getTextureReference().readToPixels(heightPixels);
+//    
+//    int jump = heightPixels.getWidth()/resolution;
+//    for(int x = 0; x < resolution; x++){
+//        for(int y = 0; y < resolution; y++){
+//            
+//            float value = heightPixels.getColor(x*jump,y*jump).b;
+//            
+//            ofPushMatrix();
+//            ofTranslate(x*blockSize,y*blockSize, height*value*0.5*blockSize );
+//            
+//            if ( value > 0.0){
+//                ofSetColor(255, MAX(blocksAlpha*255,55+value*200.0) );
+//                ofScale((1.0*(1.0-blocksMinDist))-(value*blocksMinSize),
+//                        (1.0*(1.0-blocksMinDist))-(value*blocksMinSize),
+//                        height*value);
+//                
+//                //PATRICIO: seeing crashing here when called from CLOUDS thread
+//                glCallList(cube);
+//                
+//            }
+//            ofPopMatrix();
+//        }
+//    }
+//    ofPopMatrix();
+//
+//    glDisable(GL_DEPTH_TEST);
+
 }
 
 void CloudsVisualSystemCities::selfPostDraw(){
@@ -408,7 +480,7 @@ void CloudsVisualSystemCities::selfSceneTransformation()
 
 void CloudsVisualSystemCities::selfExit()
 {
-    
+    cubeMesh.clear();
 }
 
 void CloudsVisualSystemCities::selfKeyPressed(ofKeyEventArgs & args)

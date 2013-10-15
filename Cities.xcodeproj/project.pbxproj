@@ -81,6 +81,14 @@
 		4695E2BD17512E45003001E2 /* ofxSwarmBehavior.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4695E2AA17512E45003001E2 /* ofxSwarmBehavior.cpp */; };
 		4695E2BE17512E45003001E2 /* ofxVerletSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4695E2AD17512E45003001E2 /* ofxVerletSolver.cpp */; };
 		4695E2CA17513D99003001E2 /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4695E2C817513D99003001E2 /* ofxCameraSaveLoad.cpp */; };
+		50765D6C180D97B7000D5901 /* cMask.fs in Sources */ = {isa = PBXBuildFile; fileRef = 50765D66180D97B7000D5901 /* cMask.fs */; };
+		50765D6D180D97B7000D5901 /* extrude.frag in Sources */ = {isa = PBXBuildFile; fileRef = 50765D67180D97B7000D5901 /* extrude.frag */; };
+		50765D6E180D97B7000D5901 /* extrude.vert in Sources */ = {isa = PBXBuildFile; fileRef = 50765D68180D97B7000D5901 /* extrude.vert */; };
+		50765D6F180D97B7000D5901 /* grayscott.fs in Sources */ = {isa = PBXBuildFile; fileRef = 50765D69180D97B7000D5901 /* grayscott.fs */; };
+		50765D70180D97B7000D5901 /* noise.fs in Sources */ = {isa = PBXBuildFile; fileRef = 50765D6A180D97B7000D5901 /* noise.fs */; };
+		50765D71180D97B7000D5901 /* postprocess.fs in Sources */ = {isa = PBXBuildFile; fileRef = 50765D6B180D97B7000D5901 /* postprocess.fs */; };
+		50765D74180D97E5000D5901 /* city.frag in Sources */ = {isa = PBXBuildFile; fileRef = 50765D72180D97E5000D5901 /* city.frag */; };
+		50765D75180D97E5000D5901 /* city.vert in Sources */ = {isa = PBXBuildFile; fileRef = 50765D73180D97E5000D5901 /* city.vert */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -371,6 +379,14 @@
 		4695E2AE17512E45003001E2 /* ofxVerletSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVerletSolver.h; sourceTree = "<group>"; };
 		4695E2C817513D99003001E2 /* ofxCameraSaveLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCameraSaveLoad.cpp; sourceTree = "<group>"; };
 		4695E2C917513D99003001E2 /* ofxCameraSaveLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCameraSaveLoad.h; sourceTree = "<group>"; };
+		50765D66180D97B7000D5901 /* cMask.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = cMask.fs; sourceTree = "<group>"; };
+		50765D67180D97B7000D5901 /* extrude.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = extrude.frag; sourceTree = "<group>"; };
+		50765D68180D97B7000D5901 /* extrude.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = extrude.vert; sourceTree = "<group>"; };
+		50765D69180D97B7000D5901 /* grayscott.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = grayscott.fs; sourceTree = "<group>"; };
+		50765D6A180D97B7000D5901 /* noise.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.fs; sourceTree = "<group>"; };
+		50765D6B180D97B7000D5901 /* postprocess.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = postprocess.fs; sourceTree = "<group>"; };
+		50765D72180D97E5000D5901 /* city.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = city.frag; path = bin/data/shaders/city.frag; sourceTree = SOURCE_ROOT; };
+		50765D73180D97E5000D5901 /* city.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = city.vert; path = bin/data/shaders/city.vert; sourceTree = SOURCE_ROOT; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -965,6 +981,22 @@
 			path = ../../../addons/ofxCameraSaveLoad/src;
 			sourceTree = "<group>";
 		};
+		50765D65180D97B7000D5901 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				50765D72180D97E5000D5901 /* city.frag */,
+				50765D73180D97E5000D5901 /* city.vert */,
+				50765D66180D97B7000D5901 /* cMask.fs */,
+				50765D67180D97B7000D5901 /* extrude.frag */,
+				50765D68180D97B7000D5901 /* extrude.vert */,
+				50765D69180D97B7000D5901 /* grayscott.fs */,
+				50765D6A180D97B7000D5901 /* noise.fs */,
+				50765D6B180D97B7000D5901 /* postprocess.fs */,
+			);
+			name = shaders;
+			path = bin/data/shaders;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1035,6 +1067,7 @@
 			children = (
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
+				50765D65180D97B7000D5901 /* shaders */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				3DA45C5F179DB6C3002EC0AC /* vs_src */,
 				3DE0AF5817A5B49B000CBC08 /* VisualSystemsLibrary */,
@@ -1223,6 +1256,14 @@
 				3DE0AF6217A5B49B000CBC08 /* CloudsRGBDCamera.cpp in Sources */,
 				3DE0AF6317A5B49B000CBC08 /* CloudsRGBDVideoPlayer.cpp in Sources */,
 				3DE0AF6417A5B49B000CBC08 /* CloudsVisualSystem.cpp in Sources */,
+				50765D6C180D97B7000D5901 /* cMask.fs in Sources */,
+				50765D6D180D97B7000D5901 /* extrude.frag in Sources */,
+				50765D6E180D97B7000D5901 /* extrude.vert in Sources */,
+				50765D6F180D97B7000D5901 /* grayscott.fs in Sources */,
+				50765D70180D97B7000D5901 /* noise.fs in Sources */,
+				50765D71180D97B7000D5901 /* postprocess.fs in Sources */,
+				50765D74180D97E5000D5901 /* city.frag in Sources */,
+				50765D75180D97E5000D5901 /* city.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
