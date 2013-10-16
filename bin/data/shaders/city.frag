@@ -38,6 +38,6 @@ void main(void)
 	//Lars: I added the color from the texture here... 
 	diffuse *= col.xyz;
 
-	gl_FragColor = vec4( diffuse + ambient + specular, col.w );
+	gl_FragColor = vec4( diffuse + ambient + specular, col.w ); // vec4(n*.5+.5, 1.);// 
 }
 
