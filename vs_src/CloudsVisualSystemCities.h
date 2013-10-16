@@ -44,6 +44,8 @@ public:
     
     void selfSetupRenderGui();
     void guiRenderEvent(ofxUIEventArgs &e);
+	
+//    void guiLightingEvent(ofxUIEventArgs &e);
     
     void billBoard();
 	
@@ -178,7 +180,7 @@ public:
 		m.addIndices( indices );
 	}
 	
-	void makeBigCubesVbo( int resX, int resY );
+	void makeBigCubesVbo( int _size, int _resolution );
     
 protected:
     void    makeGrid(float _size, int _resolution);

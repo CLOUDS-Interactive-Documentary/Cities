@@ -12,28 +12,30 @@ string CloudsVisualSystemCities::getSystemName()
 	return "Cities";
 }
 
-void CloudsVisualSystemCities::makeBigCubesVbo( int resX, int resY )
+void CloudsVisualSystemCities::makeBigCubesVbo( int _size, int _resolution )
 {
 	//create a huge vbo filled with cubes
 	//
+	size = _size;
+    resolution = _resolution;
+    blockSize = size/resolution;
 	
-	//make our base cube to use it's vertices and indices
+	//make our base cube who's vertices and indices we'll use to populate our big cubesMesh
 	ofVboMesh m;
-	makeCubeMesh( m, .5,2,.5 );
+	makeCubeMesh( m, 1,2,1 );
 	vector<ofVec3f>& cubeVertices = m.getVertices();
 	vector<ofVec3f>& cubeNormals = m.getNormals();
 	vector<ofIndexType>& cubeIndices = m.getIndices();
 
-	//create or faces( triangles with normals )
-	vector<ofVec3f>& vertices = cubeMesh.getVertices();
-	
+	//make a vbo full of cubes
 	cubeMesh.clear();
+	vector<ofVec3f>& vertices = cubeMesh.getVertices();
 	ofIndexType firstIndex;
-	ofVec3f offset( -resX/2, 0, -resY/2 );
-	ofVec2f tc( 1./float(resX-1), 1./float(resY-1));
-	for (int i=0; i<resX; i++)
+	ofVec3f offset( -resolution/2, 0, -resolution/2 );
+	ofVec2f tc( 1./float(resolution-1), 1./float(resolution-1));
+	for (int i=0; i<resolution; i++)
 	{
-		for (int j=0; j<resY; j++)
+		for (int j=0; j<resolution; j++)
 		{
 			//store our first cube index
 			firstIndex = vertices.size();
@@ -46,7 +48,7 @@ void CloudsVisualSystemCities::makeBigCubesVbo( int resX, int resY )
 				cubeMesh.addNormal( cubeNormals[k] );
 				
 				//our texCoords are the same for each vertex in the cube
-				cubeMesh.addTexCoord( ofVec2f(i, j) * tc );
+				cubeMesh.addTexCoord( ofVec2f(i - .5, j - .5) * tc );
 			}
 			
 			//add our indices
@@ -184,9 +186,6 @@ void CloudsVisualSystemCities::selfSetup()
     //
     makeGrid(100, 10);
 	
-	//cubes vbo
-	makeBigCubesVbo( 100, 100 );
-	
 	//cubes shader
 	cubesShader.load(getVisualSystemDataPath()+"shaders/city");
     
@@ -231,16 +230,14 @@ void CloudsVisualSystemCities::selfSetupSystemGui()
 
 void CloudsVisualSystemCities::selfGuiEvent(ofxUIEventArgs &e)
 {
-    
 }
 
 void CloudsVisualSystemCities::guiSystemEvent(ofxUIEventArgs &e)
 {
-
 }
 
 void CloudsVisualSystemCities::guiRenderEvent(ofxUIEventArgs &e)
-{
+{	
     string name = e.widget->getName();
     if (name == "Size" || name == "Resolution"){
         makeGrid(size, resolution);
@@ -300,6 +297,8 @@ void CloudsVisualSystemCities::makeGrid(float _size, int _resolution)
     glNewList(cube, GL_COMPILE);
     generateCube(cubeSize, cubeSize, cubeSize);
     glEndList();
+	
+	makeBigCubesVbo( _size, resolution );
 }
 
 void CloudsVisualSystemCities::selfUpdate()
@@ -378,28 +377,8 @@ void CloudsVisualSystemCities::selfUpdate()
 }
 
 void CloudsVisualSystemCities::selfDraw()
-{
-	
-	//TODO: cull face
-	
-	glEnable(GL_DEPTH_TEST);
-	ofPushMatrix();
-	ofRotate(90, 1, 0, 0);
-	ofScale(2,2,-2);
-	
-	cubesShader.begin();
-	cubesShader.setUniform2f( "displacmentDim", maskFbo.getWidth(), maskFbo.getHeight());
-	cubesShader.setUniformTexture("displacment", maskFbo.getTextureReference(), 0);
-	
-	cubeMesh.draw();
-	
-	cubesShader.end();
-	
-	ofPopMatrix();
-	glDisable(GL_DEPTH_TEST);
-
-
-//    ofPushMatrix();
+{	
+ //    ofPushMatrix();
 //    
 //    glEnable(GL_DEPTH_TEST);
 //    ofTranslate(-size*0.5,-size*0.5);
@@ -420,8 +399,8 @@ void CloudsVisualSystemCities::selfDraw()
 //            
 //            if ( value > 0.0){
 //                ofSetColor(255, MAX(blocksAlpha*255,55+value*200.0) );
-//                ofScale((1.0*(1.0-blocksMinDist))-(value*blocksMinSize),
-//                        (1.0*(1.0-blocksMinDist))-(value*blocksMinSize),
+//                ofScale((1.0 - blocksMinDist) - value * blocksMinSize,
+//                        (1.0 - blocksMinDist) - value * blocksMinSize,
 //                        height*value);
 //                
 //                //PATRICIO: seeing crashing here when called from CLOUDS thread
@@ -434,7 +413,50 @@ void CloudsVisualSystemCities::selfDraw()
 //    ofPopMatrix();
 //
 //    glDisable(GL_DEPTH_TEST);
+	
+	
+	
+	ofPushMatrix();
+	ofRotate(90, 1, 0, 0);
+	ofScale(blockSize,blockSize,-blockSize);
+	
+	cubesShader.begin();
+	cubesShader.setUniformTexture("displacment", maskFbo.getTextureReference(), 0);
+	cubesShader.setUniform2f( "displacmentDim", maskFbo.getWidth(), maskFbo.getHeight());
+	cubesShader.setUniform1f("blocksAlpha", blocksAlpha );
+	cubesShader.setUniform1f("minHeight", 1 );
+	cubesShader.setUniform1f("maxHeight", height / blockSize );
+	cubesShader.setUniform1f("blockSize", blockSize );
+	cubesShader.setUniform1f("blocksMinDist", blocksMinDist );
+	cubesShader.setUniform1f("blocksMinSize", blocksMinSize );
+	cubesShader.setUniform1f("shininess", 32. );//TODO: add a slider and variable for shininess
 
+//	cubesShader.setUniform1f("lightColor", )
+	
+//	uniform vec3 lightColor;
+//	uniform vec3 lightPos;
+	
+	ofEnableAlphaBlending();
+	ofBlendMode( OF_BLENDMODE_SCREEN );
+	
+//	glClearDepth(1);
+	
+	glDisable( GL_DEPTH_TEST );
+	glEnable( GL_CULL_FACE );
+	glCullFace( GL_FRONT );
+	
+//	glDepthFunc( GL_LESS ); // GL_LESS, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS
+	cubeMesh.draw();
+	
+	glEnable( GL_DEPTH_TEST );
+	glCullFace( GL_BACK );
+	cubeMesh.draw();
+	
+	cubesShader.end();
+	
+	ofPopMatrix();
+	glDisable(GL_DEPTH_TEST);
+	glDisable( GL_CULL_FACE );
 }
 
 void CloudsVisualSystemCities::selfPostDraw(){
@@ -485,7 +507,10 @@ void CloudsVisualSystemCities::selfExit()
 
 void CloudsVisualSystemCities::selfKeyPressed(ofKeyEventArgs & args)
 {
-    
+    if(args.key == 'l' || args.key == 'L')
+	{
+		cubesShader.load(getVisualSystemDataPath()+"shaders/city");
+	}
 }
 
 void CloudsVisualSystemCities::selfKeyReleased(ofKeyEventArgs & args)
