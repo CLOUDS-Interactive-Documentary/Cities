@@ -49,6 +49,7 @@ void CloudsVisualSystemCities::makeBigCubesVbo( int _size, int _resolution )
 				
 				//our texCoords are the same for each vertex in the cube
 				cubeMesh.addTexCoord( ofVec2f(i - .5, j - .5) * tc );
+
 			}
 			
 			//add our indices
@@ -170,6 +171,7 @@ void CloudsVisualSystemCities::selfSetup()
     k=0.047;
     f=0.2;
     
+	
     //  Noise
     //
     noiseShader.load("", getVisualSystemDataPath()+"shaders/noise.fs");
@@ -182,6 +184,26 @@ void CloudsVisualSystemCities::selfSetup()
     //
     maskShader.load("", getVisualSystemDataPath()+"shaders/cMask.fs");
     
+	//Overlay
+	//
+	bUseOverlay = false;
+	overlayMap = NULL;
+	string overlayPath = getVisualSystemDataPath() + "images/overlayImages/";
+	
+	ofDirectory dir;
+	dir.listDir( overlayPath );
+	for(int i = 0; i < dir.numFiles(); i++){
+		overlayNames.push_back( dir.getName(i) );
+		overlayImageMap[dir.getName(i)];
+	}
+	
+	for (map<string, ofImage>::iterator it=overlayImageMap.begin(); it!=overlayImageMap.end(); it++)
+	{
+		it->second.loadImage( overlayPath + it->first );
+	}
+	
+	
+	
     //  Points
     //
     makeGrid(100, 10);
@@ -226,6 +248,12 @@ void CloudsVisualSystemCities::selfSetupSystemGui()
     sysGui->addLabel("Mask");
     sysGui->addSlider("maskSize", 1.0, 2.0, &maskSize);
     sysGui->addSlider("maskCurve", 0.0, 1.0, &maskCurve);
+	
+	sysGui->addSpacer();
+	sysGui->addToggle("use overlay", &bUseOverlay);
+	sysGui->addSpacer();
+	sysGui->addLabel("over lays");
+	sysGui->addRadio("overlay map", overlayNames);
 }
 
 void CloudsVisualSystemCities::selfGuiEvent(ofxUIEventArgs &e)
@@ -234,6 +262,21 @@ void CloudsVisualSystemCities::selfGuiEvent(ofxUIEventArgs &e)
 
 void CloudsVisualSystemCities::guiSystemEvent(ofxUIEventArgs &e)
 {
+	if(e.widget->getKind() == OFX_UI_WIDGET_TOGGLE && e.getToggle()->getValue())
+	{
+		string name = e.getName();
+		for (map<string, ofImage>::iterator it=overlayImageMap.begin(); it!=overlayImageMap.end(); it++)
+		{
+			if(it->first == name)
+			{
+				overlayMap = &it->second;
+				bUseOverlay = true;
+				
+				cout << bUseOverlay << " : " << overlayMap <<  endl;
+			}
+		}
+		
+	}
 }
 
 void CloudsVisualSystemCities::guiRenderEvent(ofxUIEventArgs &e)
@@ -423,6 +466,13 @@ void CloudsVisualSystemCities::selfDraw()
 	cubesShader.begin();
 	cubesShader.setUniformTexture("displacment", maskFbo.getTextureReference(), 0);
 	cubesShader.setUniform2f( "displacmentDim", maskFbo.getWidth(), maskFbo.getHeight());
+	
+	if(bUseOverlay && overlayMap != NULL){
+		cubesShader.setUniformTexture("overlayMap", overlayMap->getTextureReference(), 1);
+		cubesShader.setUniform2f("overlayDim", overlayMap->getWidth(), overlayMap->getHeight());
+	}
+	cubesShader.setUniform1i("bUseOverlay", bUseOverlay );
+	
 	cubesShader.setUniform1f("blocksAlpha", blocksAlpha );
 	cubesShader.setUniform1f("minHeight", 1 );
 	cubesShader.setUniform1f("maxHeight", height / blockSize );
@@ -468,6 +518,8 @@ void CloudsVisualSystemCities::selfPostDraw(){
     postShader.setUniform1f("grainDist", postGrainDist);
     CloudsVisualSystem::selfPostDraw();
     postShader.end();
+	
+//	overlayMap.draw(0,0,400, 400);
 }
 
 void CloudsVisualSystemCities::billBoard()

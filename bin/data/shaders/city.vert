@@ -5,6 +5,10 @@ uniform vec3 lightColor;
 uniform vec3 lightPos;
 
 uniform sampler2DRect displacment;
+uniform sampler2DRect overlayMap;
+uniform vec2 overlayDim;
+uniform int bUseOverlay = 0;
+
 uniform vec2 displacmentDim;
 uniform vec2 texSize = vec2(500., 500.);
 
@@ -27,11 +31,16 @@ varying vec4 ecPosition;
 void main()
 {
 	
-	vec2 uv = gl_MultiTexCoord0.xy * displacmentDim;
+	vec2 uv = gl_MultiTexCoord0.xy;
 	
 	//	float r = texture2DRect( randomness, uv ).r;
-	vec3 displacmentSample = texture2DRect( displacment, uv ).xyz;
+	vec3 displacmentSample = texture2DRect( displacment, uv * displacmentDim ).xyz;
 	float disp = displacmentSample.y;
+	
+	if(bUseOverlay == 1)
+	{
+		disp *= texture2DRect( overlayMap, uv * overlayDim ).x;
+	}
 	
 	col = vec4( displacmentSample, max( blocksAlpha, disp * .78 + .22));//<-- aplha taken from the original render algorthim
 	norm = gl_NormalMatrix * gl_Normal;

@@ -226,4 +226,9 @@ protected:
 	//LB
 	ofVboMesh cubeMesh;
 	ofShader cubesShader;
+	ofImage* overlayMap;
+	bool bUseOverlay;
+	
+	vector<string> overlayNames;
+	map<string, ofImage> overlayImageMap;
 };
