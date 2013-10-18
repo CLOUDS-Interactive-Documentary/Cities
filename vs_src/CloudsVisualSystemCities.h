@@ -2,12 +2,15 @@
 //  CloudsVisualSystemCities.h
 //
 //  Created by Patricio Gonzalez Vivo on 5/26/13.
+//	with additions from lars berg
 //
 //
 
 #pragma once
 
 #include "CloudsVisualSystem.h"
+#include "ofxObjLoader.h"
+
 
 class CloudsVisualSystemCities : public CloudsVisualSystem {
 public:
@@ -53,6 +56,20 @@ public:
 	ofVec3f normalFrom3Points(ofVec3f p0, ofVec3f p1, ofVec3f p2)
 	{
 		return (p2 - p1).cross( p0 - p1).normalized();
+	}
+	
+	void makeCubeMeshWithTexCoords(ofVboMesh& m, float w=1., float h=1., float d=1.)
+	{
+		//load a simplecube using the obj loader and scale the vertices
+		m.clear();
+		ofxObjLoader::load( getVisualSystemDataPath() + "models/cube.obj", m, true );
+		
+		vector<ofVec3f>& v = m.getVertices();
+		for(int i=0; i < v.size(); i++){
+			v[i].x *= w;
+			v[i].y *= h;
+			v[i].z *= d;
+		}
 	}
 	
 	void makeCubeMesh(ofVboMesh& m, float w=1., float h=1., float d=1.)

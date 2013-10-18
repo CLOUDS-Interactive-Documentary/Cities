@@ -4,6 +4,8 @@
 //uniform sampler2DRect pong;
 //uniform float randSeed;
 
+uniform sampler2DRect facadeTexture;
+
 varying vec4 col;
 varying vec3 norm;
 varying vec4 lPos;
@@ -15,6 +17,7 @@ varying vec2 uv;
 //uniform vec3 diffuseColor = vec3(.9);
 //uniform vec3 specularColor = vec3(1.);
 uniform float shininess = 64.;
+uniform float edgeAlphaScl = 1.5;
 
 
 void main(void)
@@ -33,11 +36,15 @@ void main(void)
 	//lighting
     ambient = gl_LightSource[0].ambient.xyz;
     diffuse = gl_LightSource[0].diffuse.xyz * nDotVP;
+//	diffuse *= texture2DRect( facadeTexture, uv );
     specular = gl_LightSource[0].specular.xyz * pow(nDotHV, shininess);;
 	
 	//Lars: I added the color from the texture here... 
 	diffuse *= col.xyz;
 
-	gl_FragColor = vec4( diffuse + ambient + specular, col.w ); // vec4(n*.5+.5, 1.);//
+	float edgeAlpha = min(1., 1. - pow( edgeAlphaScl * length(abs(uv*2.-1.)), 2.) );
+	if(edgeAlpha < .001)	discard;
+	gl_FragColor = vec4( diffuse + ambient + specular, col.w * edgeAlpha);
+	//gl_FragColor =  vec4(n*.5+.5, 1.);
 }
 

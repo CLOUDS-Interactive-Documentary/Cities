@@ -89,6 +89,8 @@
 		50765D71180D97B7000D5901 /* postprocess.fs in Sources */ = {isa = PBXBuildFile; fileRef = 50765D6B180D97B7000D5901 /* postprocess.fs */; };
 		50765D74180D97E5000D5901 /* city.frag in Sources */ = {isa = PBXBuildFile; fileRef = 50765D72180D97E5000D5901 /* city.frag */; };
 		50765D75180D97E5000D5901 /* city.vert in Sources */ = {isa = PBXBuildFile; fileRef = 50765D73180D97E5000D5901 /* city.vert */; };
+		50765DA018118752000D5901 /* glm.c in Sources */ = {isa = PBXBuildFile; fileRef = 50765D9818118752000D5901 /* glm.c */; };
+		50765DA118118752000D5901 /* ofxObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50765D9C18118752000D5901 /* ofxObjLoader.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -387,6 +389,10 @@
 		50765D6B180D97B7000D5901 /* postprocess.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = postprocess.fs; sourceTree = "<group>"; };
 		50765D72180D97E5000D5901 /* city.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = city.frag; path = bin/data/shaders/city.frag; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		50765D73180D97E5000D5901 /* city.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = city.vert; path = bin/data/shaders/city.vert; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		50765D9818118752000D5901 /* glm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glm.c; sourceTree = "<group>"; };
+		50765D9918118752000D5901 /* glm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glm.h; sourceTree = "<group>"; };
+		50765D9C18118752000D5901 /* ofxObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxObjLoader.cpp; sourceTree = "<group>"; };
+		50765D9D18118752000D5901 /* ofxObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxObjLoader.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -997,9 +1003,46 @@
 			path = bin/data/shaders;
 			sourceTree = "<group>";
 		};
+		50765D8518118752000D5901 /* ofxObjLoader */ = {
+			isa = PBXGroup;
+			children = (
+				50765D9618118752000D5901 /* libs */,
+				50765D9B18118752000D5901 /* src */,
+			);
+			name = ofxObjLoader;
+			path = ../../../addons/ofxObjLoader;
+			sourceTree = "<group>";
+		};
+		50765D9618118752000D5901 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				50765D9718118752000D5901 /* glm */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		50765D9718118752000D5901 /* glm */ = {
+			isa = PBXGroup;
+			children = (
+				50765D9818118752000D5901 /* glm.c */,
+				50765D9918118752000D5901 /* glm.h */,
+			);
+			path = glm;
+			sourceTree = "<group>";
+		};
+		50765D9B18118752000D5901 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				50765D9C18118752000D5901 /* ofxObjLoader.cpp */,
+				50765D9D18118752000D5901 /* ofxObjLoader.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				50765D8518118752000D5901 /* ofxObjLoader */,
 				3DEFE10E176E7D8000139095 /* ofxXmlSettings */,
 				3D5B943F175304B700F558AC /* ofxRange */,
 				3D5B94211753049500F558AC /* ofxMSATimer */,
@@ -1264,6 +1307,8 @@
 				50765D71180D97B7000D5901 /* postprocess.fs in Sources */,
 				50765D74180D97E5000D5901 /* city.frag in Sources */,
 				50765D75180D97E5000D5901 /* city.vert in Sources */,
+				50765DA018118752000D5901 /* glm.c in Sources */,
+				50765DA118118752000D5901 /* ofxObjLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

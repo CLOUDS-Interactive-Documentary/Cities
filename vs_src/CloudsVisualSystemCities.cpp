@@ -22,7 +22,7 @@ void CloudsVisualSystemCities::makeBigCubesVbo( int _size, int _resolution )
 	
 	//make our base cube who's vertices and indices we'll use to populate our big cubesMesh
 	ofVboMesh m;
-	makeCubeMesh( m, 1,2,1 );
+	makeCubeMeshWithTexCoords( m, 1,2,1 );
 	vector<ofVec3f>& cubeVertices = m.getVertices();
 	vector<ofVec3f>& cubeNormals = m.getNormals();
 	vector<ofIndexType>& cubeIndices = m.getIndices();
@@ -30,6 +30,7 @@ void CloudsVisualSystemCities::makeBigCubesVbo( int _size, int _resolution )
 	//make a vbo full of cubes
 	cubeMesh.clear();
 	vector<ofVec3f>& vertices = cubeMesh.getVertices();
+	vector<ofVec2f> facadeUV;
 	ofIndexType firstIndex;
 	ofVec3f offset( -resolution/2, 0, -resolution/2 );
 	ofVec2f tc( 1./float(resolution-1), 1./float(resolution-1));
@@ -49,6 +50,8 @@ void CloudsVisualSystemCities::makeBigCubesVbo( int _size, int _resolution )
 				
 				//our texCoords are the same for each vertex in the cube
 				cubeMesh.addTexCoord( ofVec2f(i - .5, j - .5) * tc );
+				
+				
 
 			}
 			
@@ -474,7 +477,7 @@ void CloudsVisualSystemCities::selfDraw()
 	cubesShader.setUniform1i("bUseOverlay", bUseOverlay );
 	
 	cubesShader.setUniform1f("blocksAlpha", blocksAlpha );
-	cubesShader.setUniform1f("minHeight", 1 );
+	cubesShader.setUniform1f("minHeight", .05 );
 	cubesShader.setUniform1f("maxHeight", height / blockSize );
 	cubesShader.setUniform1f("blockSize", blockSize );
 	cubesShader.setUniform1f("blocksMinDist", blocksMinDist );

@@ -20,18 +20,18 @@ uniform float blocksMinSize = 1.;
 uniform float blocksAlpha = 1.;
 
 uniform float maxHeight = 10.;
-uniform float minHeight = 1.;
+uniform float minHeight = .1;
 
 varying vec4 col;
 varying vec3 norm;
 varying vec3 ePos;
 varying vec4 lPos;
 varying vec4 ecPosition;
+varying vec2 uv;
 
 void main()
 {
-	
-	vec2 uv = gl_MultiTexCoord0.xy;
+	uv = gl_MultiTexCoord0.xy;
 	
 	//	float r = texture2DRect( randomness, uv ).r;
 	vec3 displacmentSample = texture2DRect( displacment, uv * displacmentDim ).xyz;
@@ -49,6 +49,7 @@ void main()
 	vec3 vPos = gl_Vertex.xyz;
 	vec2 cubeCenter = ( uv - displacmentDim/2.) * .5;
 	vec2 localPos = vPos.xz - cubeCenter;
+	
 	localPos *= (1.0-blocksMinDist) - disp * blocksMinSize;//scale it 
 	
 	//reposition our vertex
