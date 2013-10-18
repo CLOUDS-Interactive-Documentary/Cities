@@ -22,10 +22,11 @@ void CloudsVisualSystemCities::makeBigCubesVbo( int _size, int _resolution )
 	
 	//make our base cube who's vertices and indices we'll use to populate our big cubesMesh
 	ofVboMesh m;
-	makeCubeMeshWithTexCoords( m, 1,2,1 );
+	makeBeveledCubeMeshWithTexCoords( m, 1,2,1 );
 	vector<ofVec3f>& cubeVertices = m.getVertices();
 	vector<ofVec3f>& cubeNormals = m.getNormals();
 	vector<ofIndexType>& cubeIndices = m.getIndices();
+	vector<ofVec2f>& cubeUV = m.getTexCoords();
 
 	//make a vbo full of cubes
 	cubeMesh.clear();
@@ -51,8 +52,8 @@ void CloudsVisualSystemCities::makeBigCubesVbo( int _size, int _resolution )
 				//our texCoords are the same for each vertex in the cube
 				cubeMesh.addTexCoord( ofVec2f(i - .5, j - .5) * tc );
 				
-				
-
+				//use the color to pass texcoordsper face. I know, I know... these should be swapped
+				cubeMesh.addColor( ofFloatColor( cubeUV[k].x, cubeUV[k].y, 0,0 ) );
 			}
 			
 			//add our indices
@@ -205,6 +206,9 @@ void CloudsVisualSystemCities::selfSetup()
 		it->second.loadImage( overlayPath + it->first );
 	}
 	
+	
+	facadeTexture.loadImage( getVisualSystemDataPath() + "images/noise_wispy.png");
+	//	facadeTexture.getTextureReference().setTextureWrap( GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T );// this was breaking the shader!?!
 	
 	
     //  Points
@@ -469,9 +473,11 @@ void CloudsVisualSystemCities::selfDraw()
 	cubesShader.begin();
 	cubesShader.setUniformTexture("displacment", maskFbo.getTextureReference(), 0);
 	cubesShader.setUniform2f( "displacmentDim", maskFbo.getWidth(), maskFbo.getHeight());
+	cubesShader.setUniformTexture("facadeTexture", facadeTexture.getTextureReference(), 1);
+	cubesShader.setUniform2f( "facadeTextureDim", facadeTexture.getWidth(), facadeTexture.getHeight());
 	
 	if(bUseOverlay && overlayMap != NULL){
-		cubesShader.setUniformTexture("overlayMap", overlayMap->getTextureReference(), 1);
+		cubesShader.setUniformTexture("overlayMap", overlayMap->getTextureReference(), 2);
 		cubesShader.setUniform2f("overlayDim", overlayMap->getWidth(), overlayMap->getHeight());
 	}
 	cubesShader.setUniform1i("bUseOverlay", bUseOverlay );
@@ -480,9 +486,10 @@ void CloudsVisualSystemCities::selfDraw()
 	cubesShader.setUniform1f("minHeight", .05 );
 	cubesShader.setUniform1f("maxHeight", height / blockSize );
 	cubesShader.setUniform1f("blockSize", blockSize );
+	cubesShader.setUniform1f("blockResolution", resolution );
 	cubesShader.setUniform1f("blocksMinDist", blocksMinDist );
 	cubesShader.setUniform1f("blocksMinSize", blocksMinSize );
-	cubesShader.setUniform1f("shininess", 32. );//TODO: add a slider and variable for shininess
+	cubesShader.setUniform1f("shininess", 8. );//TODO: add a slider and variable for shininess
 
 //	cubesShader.setUniform1f("lightColor", )
 	
@@ -499,7 +506,7 @@ void CloudsVisualSystemCities::selfDraw()
 	glCullFace( GL_BACK );
 	
 //	glDepthFunc( GL_LESS ); // GL_LESS, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS
-	cubeMesh.draw();
+//	cubeMesh.draw();
 	
 	glEnable( GL_DEPTH_TEST );
 	glCullFace( GL_FRONT );

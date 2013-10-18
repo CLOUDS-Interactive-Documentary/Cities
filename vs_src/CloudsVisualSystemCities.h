@@ -58,11 +58,25 @@ public:
 		return (p2 - p1).cross( p0 - p1).normalized();
 	}
 	
+	void makeBeveledCubeMeshWithTexCoords(ofVboMesh& m, float w=1., float h=1., float d=1.)
+	{
+		//load a simplecube using the obj loader and scale the vertices
+		m.clear();
+		ofxObjLoader::load( getVisualSystemDataPath() + "models/beveledCube.obj", m, true );
+		
+		vector<ofVec3f>& v = m.getVertices();
+		for(int i=0; i < v.size(); i++){
+			v[i].x *= w;
+			v[i].y *= h;
+			v[i].z *= d;
+		}
+	}
+	
 	void makeCubeMeshWithTexCoords(ofVboMesh& m, float w=1., float h=1., float d=1.)
 	{
 		//load a simplecube using the obj loader and scale the vertices
 		m.clear();
-		ofxObjLoader::load( getVisualSystemDataPath() + "models/cube.obj", m, true );
+		ofxObjLoader::load( getVisualSystemDataPath() + "models/cube.obj", m, false );
 		
 		vector<ofVec3f>& v = m.getVertices();
 		for(int i=0; i < v.size(); i++){
@@ -248,4 +262,5 @@ protected:
 	
 	vector<string> overlayNames;
 	map<string, ofImage> overlayImageMap;
+	ofImage facadeTexture;
 };
