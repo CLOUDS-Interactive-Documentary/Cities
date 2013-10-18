@@ -47,15 +47,16 @@ void main(void)
 	
 	//facade texturing
 	vec2 fuv = mod(facadeUV, vec2(1.));
-	vec3 facadeVal = texture2DRect( facadeTexture, fuv * facadeTextureDim ).xyz * facadeTextureAmount + (1.- facadeTextureAmount);
+	vec3 fcdVl = texture2DRect( facadeTexture, fuv * facadeTextureDim ).xyz;
+	vec3 facadeVal = fcdVl * facadeTextureAmount + (1.- facadeTextureAmount);
 	
 	//lighting
     ambient = gl_LightSource[0].ambient.xyz;
     diffuse = gl_LightSource[0].diffuse.xyz * fr;//nDotVP; // temp solution for avoiding poorly positioned lights
-	float specVal = pow(nDotVP, shininess);
-    specular = gl_LightSource[0].specular.xyz * specVal * facadeVal;
+	float specVal = pow(nDotVP, shininess * 10.);
+    specular = gl_LightSource[0].specular.xyz * (specVal + (fcdVl*facadeTextureAmount));
 	
-	diffuse *= facadeVal;
+//	diffuse *= facadeVal;
 	
 	
 	//super fake AO
