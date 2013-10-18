@@ -70,13 +70,14 @@ void main()
 		vPos.y = 0.;
 	}
 	
-	lPos = gl_ModelViewMatrix * gl_LightSource[0].position;
+//	lPos = gl_ModelViewMatrix * vec4( -100.,10000., 0., 1.);//( vec4( 0.,0.,., 1.) );//gl_LightSource[0].position * vec4(vec3(10.),1.));
+	lPos = vec4( gl_LightSource[0].position.xyz * 100., 1.);
 	ecPosition = gl_ModelViewMatrix * vec4(vPos, 1.);
 	
 	ePos = normalize(ecPosition.xyz/ecPosition.w);
 	gl_Position = gl_ProjectionMatrix * ecPosition;
 	
-	float facadeUVScl = .6;
+	float facadeUVScl = .4;
 	facadeUV.x = gl_Color.x * facadeUVScl + uv.x;
 	facadeUV.y = gl_Color.y * facadeUVScl + uv.y;
 

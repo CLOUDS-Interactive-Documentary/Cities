@@ -489,7 +489,7 @@ void CloudsVisualSystemCities::selfDraw()
 	cubesShader.setUniform1f("blockResolution", resolution );
 	cubesShader.setUniform1f("blocksMinDist", blocksMinDist );
 	cubesShader.setUniform1f("blocksMinSize", blocksMinSize );
-	cubesShader.setUniform1f("shininess", 8. );//TODO: add a slider and variable for shininess
+	cubesShader.setUniform1f("shininess", 2. );//TODO: add a slider and variable for shininess
 
 //	cubesShader.setUniform1f("lightColor", )
 	
