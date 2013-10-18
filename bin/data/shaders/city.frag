@@ -35,12 +35,12 @@ void main(void)
 	
 	//lighting
     ambient = gl_LightSource[0].ambient.xyz;
-    diffuse = gl_LightSource[0].diffuse.xyz * nDotVP;
+    diffuse = gl_LightSource[0].diffuse.xyz * fr;//nDotVP;
 //	diffuse *= texture2DRect( facadeTexture, uv );
     specular = gl_LightSource[0].specular.xyz * pow(nDotHV, shininess);;
 	
 	//Lars: I added the color from the texture here... 
-	diffuse *= col.xyz;
+//	diffuse *= col.xyz;
 
 	float edgeAlpha = min(1., 1. - pow( edgeAlphaScl * length(abs(uv*2.-1.)), 2.) );
 	if(edgeAlpha < .001)	discard;

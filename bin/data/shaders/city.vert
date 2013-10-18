@@ -50,10 +50,13 @@ void main()
 	vec2 cubeCenter = ( uv - displacmentDim/2.) * .5;
 	vec2 localPos = vPos.xz - cubeCenter;
 	
-	localPos *= (1.0-blocksMinDist) - disp * blocksMinSize;//scale it 
-	
-	//reposition our vertex
-	vPos.xz = localPos + cubeCenter;//back to world space
+	if(disp > 0.001)
+	{
+		localPos *= (1.0-blocksMinDist) - disp * blocksMinSize;//scale it
+		
+		//reposition our vertex
+		vPos.xz = localPos + cubeCenter;//back to world space
+	}
 	vPos.y *= disp * maxHeight + minHeight;
 	
 	lPos = gl_ModelViewMatrix * gl_LightSource[0].position;
