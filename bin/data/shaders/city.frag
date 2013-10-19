@@ -46,8 +46,9 @@ void main(void)
 	float fr = max(0.,dot( -normalize(ePos), normalize( norm ) ) );
 	
 	//facade texturing
-	vec2 fuv = mod(facadeUV, vec2(1.));
-	vec3 fcdVl = texture2DRect( facadeTexture, fuv * facadeTextureDim ).xyz;
+	vec3 fcdVl = texture2DRect( facadeTexture, mod(gl_FragCoord.xy * 8. * (ePos.z+2.), facadeTextureDim) ).xyz;
+//	vec2 fuv = mod(facadeUV, vec2(1.));
+//	vec3 fcdVl = texture2DRect( facadeTexture, fuv * facadeTextureDim ).xyz;
 	vec3 facadeVal = fcdVl * facadeTextureAmount + (1.- facadeTextureAmount);
 	
 	//lighting

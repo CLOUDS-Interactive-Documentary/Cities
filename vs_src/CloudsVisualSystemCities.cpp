@@ -508,8 +508,8 @@ void CloudsVisualSystemCities::selfDraw()
 	glEnable( GL_CULL_FACE );
 	glCullFace( GL_BACK );
 	
-//	glDepthFunc( GL_LESS ); // GL_LESS, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS
-//	cubeMesh.draw();
+	glDepthFunc( GL_LESS ); // GL_LESS, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS
+	cubeMesh.draw();
 	
 	glEnable( GL_DEPTH_TEST );
 	glCullFace( GL_FRONT );
