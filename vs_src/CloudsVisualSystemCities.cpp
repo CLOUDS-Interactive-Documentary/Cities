@@ -174,6 +174,7 @@ void CloudsVisualSystemCities::selfSetup()
     diffV=0.04;
     k=0.047;
     f=0.2;
+	overScale = 1;
     
 	
     //  Noise
@@ -236,7 +237,8 @@ void CloudsVisualSystemCities::selfEnd()
 
 void CloudsVisualSystemCities::selfSetupSystemGui()
 {
-    
+	sysGui->addSlider("overScale", 1, 20, &overScale);
+	
     sysGui->addLabel("Noise");
     sysGui->addSlider("noise_zoom", 0.0, 100.0, &noiseZoom);
     sysGui->addSlider("noise_speed", 0.0, 5.0, &noiseSpeed);
@@ -469,6 +471,7 @@ void CloudsVisualSystemCities::selfDraw()
 	ofPushMatrix();
 	ofRotate(90, 1, 0, 0);
 	ofScale(blockSize,blockSize,-blockSize);
+	ofScale(overScale,overScale,overScale);
 	
 	cubesShader.begin();
 	cubesShader.setUniformTexture("displacment", maskFbo.getTextureReference(), 0);

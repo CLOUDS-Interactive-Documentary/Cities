@@ -63,7 +63,7 @@ void main(void)
 	diffuse *= pow(min(1., 1.01 * vertex.y ), 2.);
 	
 	//Lars: I added the color from the texture here... 
-	diffuse *= min( pow(toGreyScale( col.xyz ) * 10., 2.), 1.) ;
+	//diffuse *= min( pow(toGreyScale( col.xyz ) * 10., 2.), 1.);
 
 	
 	gl_FragColor = vec4( diffuse + ambient + specular, col.w * edgeAlpha);

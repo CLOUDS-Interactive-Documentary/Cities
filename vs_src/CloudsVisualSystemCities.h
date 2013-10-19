@@ -263,4 +263,5 @@ protected:
 	vector<string> overlayNames;
 	map<string, ofImage> overlayImageMap;
 	ofImage facadeTexture;
+	float overScale;
 };

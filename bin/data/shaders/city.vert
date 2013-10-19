@@ -32,32 +32,33 @@ varying vec4 ecPosition;
 varying vec2 uv;
 varying vec2 facadeUV;
 
+vec4 getDisplacment( vec2 _uv ){
+	if(bUseOverlay == 0){
+		return texture2DRect( displacment, _uv * displacmentDim );
+	}
+	
+	return texture2DRect( displacment, _uv * displacmentDim ) * texture2DRect( overlayMap, _uv * overlayDim );
+}
+
 void main()
 {
 	uv = gl_MultiTexCoord0.xy;
 	vertex = gl_Vertex.xyz;
 	
-	//	float r = texture2DRect( randomness, uv ).r;
-	vec3 displacmentSample = texture2DRect( displacment, uv * displacmentDim ).xyz;
-	float disp = displacmentSample.y;
+	//get displacement
+	vec4 displacmentSample = getDisplacment( uv );
+	float disp = displacmentSample.x;
 	
-	if(bUseOverlay == 1)
-	{
-		disp *= texture2DRect( overlayMap, uv * overlayDim ).x;
-	}
-	
-	col = vec4( displacmentSample, max( blocksAlpha, disp * .78 + .22));//<-- aplha taken from the original render algorthim
+	col = vec4( displacmentSample.xyz, max( blocksAlpha, disp * .78 + .22));//<-- aplha taken from the original render algorthim
 	norm = gl_NormalMatrix * gl_Normal;
 	
 	//emulating particio's scaling algorithm in the x & z axis
 	vec3 vPos = gl_Vertex.xyz;
-	vec2 cubeCenter = uv * vec2(blockResolution) - vec2(blockResolution)*.5;//( uv - displacmentDim/2.) * .5;
+	vec2 cubeCenter = uv * vec2(blockResolution) - vec2(blockResolution)*.5;
 	vec2 localPos = vPos.xz - cubeCenter;
-	
-//	localPos *= blocksMinSize;
-	
+
+	//scale it using patricio's algorithm
 	localPos *= (1.0-blocksMinDist) - disp * blocksMinSize;//scale it
-//	localPos *= max( .55, disp * blocksMinSize);//scale it
 		
 	//reposition our vertex
 	vPos.xz = localPos + cubeCenter;//back to world space
@@ -70,7 +71,6 @@ void main()
 		vPos.y = 0.;
 	}
 	
-//	lPos = gl_ModelViewMatrix * vec4( -100.,10000., 0., 1.);//( vec4( 0.,0.,., 1.) );//gl_LightSource[0].position * vec4(vec3(10.),1.));
 	lPos = vec4( gl_LightSource[0].position.xyz * 100., 1.);
 	ecPosition = gl_ModelViewMatrix * vec4(vPos, 1.);
 	
