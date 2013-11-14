@@ -23,14 +23,26 @@ uniform float blocksAlpha = 1.;
 uniform float maxHeight = 10.;
 uniform float minHeight = .1;
 
+uniform float drawEdges;
+uniform float lineWidth = 10.;
+
 varying vec4 col;
 varying vec3 norm;
 varying vec3 vertex;
+varying vec3 vPos;
 varying vec3 ePos;
 varying vec4 lPos;
 varying vec4 ecPosition;
 varying vec2 uv;
 varying vec2 facadeUV;
+
+varying vec4 position;
+
+uniform mat4 invProjection;
+uniform mat4 projection;
+uniform mat4 modelView;
+
+varying vec2 projImgUV;
 
 vec4 getDisplacment( vec2 _uv ){
 	if(bUseOverlay == 0){
@@ -42,6 +54,8 @@ vec4 getDisplacment( vec2 _uv ){
 
 void main()
 {
+	lPos = vec4( gl_LightSource[0].position.xyz, 1.);
+	
 	uv = gl_MultiTexCoord0.xy;
 	vertex = gl_Vertex.xyz;
 	
@@ -53,36 +67,41 @@ void main()
 	norm = gl_NormalMatrix * gl_Normal;
 	
 	//emulating particio's scaling algorithm in the x & z axis
-	vec3 vPos = gl_Vertex.xyz;
+	vPos = gl_Vertex.xyz;
 	vec2 cubeCenter = uv * vec2(blockResolution) - vec2(blockResolution)*.5;
 	vec2 localPos = vPos.xz - cubeCenter;
 
 	//scale it using patricio's algorithm
 	localPos *= (1.0-blocksMinDist) - disp * blocksMinSize;//scale it
 		
-	//reposition our vertex
+	//reposition our vertex in the x & z planes
 	vPos.xz = localPos + cubeCenter;//back to world space
 	
+	//extrude our building vertically
 	float vScl = 2.;
 	if(vPos.y > .1){
-		vPos.y += disp * maxHeight - .9 * vScl;
+		vPos.y += disp * maxHeight;// - .9 * vScl;
 	}
 	else{
 		vPos.y = 0.;
 	}
 	
-	lPos = vec4( gl_LightSource[0].position.xyz * 100., 1.);
+	
+	
+//	ecPosition = modelView * vec4(vPos, 1.);
 	ecPosition = gl_ModelViewMatrix * vec4(vPos, 1.);
 	
-	ePos = normalize(ecPosition.xyz/ecPosition.w);
-	gl_Position = gl_ProjectionMatrix * ecPosition;
-	
-	float facadeUVScl = .4;
-	facadeUV.x = gl_Color.x * facadeUVScl + uv.x;
-	facadeUV.y = gl_Color.y * facadeUVScl + uv.y;
-
-	if(abs(gl_Normal.y) < .75 ){
-		facadeUV.y = (1.-gl_Color.y) * disp * maxHeight - .9 * vScl;
-		facadeUV.y *= facadeUVScl;
+	if(int(drawEdges) == 1)
+	{
+		ecPosition.xyz += norm * lineWidth * .5;
 	}
+	
+	ePos = normalize(ecPosition.xyz/ecPosition.w);
+//	position = projection * ecPosition;
+	position = gl_ProjectionMatrix * ecPosition;
+	gl_Position = position;
+	
+	gl_FrontColor = gl_Color;
+	
+	projImgUV = normalize( vec3(invProjection * vec4(vPos, 1.))).xy * .5 + .5;
 }

@@ -1,9 +1,9 @@
 <Canvas>
     <Kind>42</Kind>
     <Name>SystemSettings</Name>
-    <IsMinified>0</IsMinified>
-    <XPosition>213.000000000</XPosition>
-    <YPosition>1.000000000</YPosition>
+    <IsMinified>1</IsMinified>
+    <XPosition>1.000000000</XPosition>
+    <YPosition>24.000000000</YPosition>
 </Canvas>
 <Widget>
     <Kind>2</Kind>
@@ -13,27 +13,27 @@
 <Widget>
     <Kind>4</Kind>
     <Name>overScale</Name>
-    <Value>10.733989716</Value>
+    <Value>5.960591316</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>noise_zoom</Name>
-    <Value>0.000000000</Value>
+    <Value>18.226600647</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>noise_speed</Name>
-    <Value>0.517241418</Value>
+    <Value>0.738916278</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Feed</Name>
-    <Value>0.000000000</Value>
+    <Value>0.059605908</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Loops</Name>
-    <Value>5.137930870</Value>
+    <Value>14.832511902</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

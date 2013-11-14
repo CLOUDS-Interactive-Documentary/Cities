@@ -255,10 +255,18 @@ protected:
     float       postGrainDist;
 	
 	//LB
+	ofImage colorMap;
 	ofVboMesh cubeMesh;
 	ofShader cubesShader;
 	ofImage* overlayMap;
 	bool bUseOverlay;
+	
+	ofVbo edgeVbo;
+	bool bEdgeSetup;
+	int edgeVboVertexCount, edgeVboIndexCount;
+	float edgeLineWidth;
+	
+	ofCamera projector;
 	
 	vector<string> overlayNames;
 	map<string, ofImage> overlayImageMap;
