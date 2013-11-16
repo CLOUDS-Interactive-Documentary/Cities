@@ -260,7 +260,7 @@ void CloudsVisualSystemCities::selfSetup()
 	
 	//defaults
 	bEdgeSetup = false;
-    edgeLineWidth = 6;
+    edgeLineWidth = 1.5;
 	
 	//colormap
 	colorMap.loadImage(getVisualSystemDataPath() + "images/citiesProjectionDebug.png");
@@ -632,8 +632,8 @@ void CloudsVisualSystemCities::selfDraw()
 
 	edgeVbo.drawElements(GL_LINES, edgeVboIndexCount );
 	
-//	glPointSize( edgeLineWidth );
-//	edgeVbo.draw(GL_POINTS, 0, edgeVboVertexCount );
+	glPointSize( edgeLineWidth );
+	edgeVbo.draw(GL_POINTS, 0, edgeVboVertexCount );
 	
 	cubesShader.end();
 	

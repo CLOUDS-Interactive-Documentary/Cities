@@ -812,8 +812,8 @@
 		3DA45C5F179DB6C3002EC0AC /* vs_src */ = {
 			isa = PBXGroup;
 			children = (
-				3DA460E4179EF71C002EC0AC /* CloudsVisualSystemCities.cpp */,
 				3DA460E5179EF71C002EC0AC /* CloudsVisualSystemCities.h */,
+				3DA460E4179EF71C002EC0AC /* CloudsVisualSystemCities.cpp */,
 			);
 			path = vs_src;
 			sourceTree = SOURCE_ROOT;
@@ -821,12 +821,12 @@
 		3DE0AF5817A5B49B000CBC08 /* VisualSystemsLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				3DE0AF5A17A5B49B000CBC08 /* CloudsRGBDCamera.cpp */,
 				3DE0AF5B17A5B49B000CBC08 /* CloudsRGBDCamera.h */,
-				3DE0AF5C17A5B49B000CBC08 /* CloudsRGBDVideoPlayer.cpp */,
+				3DE0AF5A17A5B49B000CBC08 /* CloudsRGBDCamera.cpp */,
 				3DE0AF5D17A5B49B000CBC08 /* CloudsRGBDVideoPlayer.h */,
-				3DE0AF5E17A5B49B000CBC08 /* CloudsVisualSystem.cpp */,
+				3DE0AF5C17A5B49B000CBC08 /* CloudsRGBDVideoPlayer.cpp */,
 				3DE0AF5F17A5B49B000CBC08 /* CloudsVisualSystem.h */,
+				3DE0AF5E17A5B49B000CBC08 /* CloudsVisualSystem.cpp */,
 				3DE0AF6017A5B49B000CBC08 /* ofxLight.h */,
 			);
 			path = VisualSystemsLibrary;
